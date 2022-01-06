@@ -85,8 +85,8 @@ module serial
   assign a1 = c$ds_app_arg[7:0];
 
   assign c$ds_case_alt = c$ds_app_arg_1[32:32] ? {1'b1,
-                                                  {1'b1,32'd65}} : {1'b0,
-                                                                    {1'b0,32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}};
+                                                  c$ds_app_arg_1} : {1'b0,
+                                                                     {1'b0,32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx}};
 
   assign result_0 = maybeToBoola_sending ? {1'b1,
                                             {1'b1,32'd66}} : c$ds_case_alt;

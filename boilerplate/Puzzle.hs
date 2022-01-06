@@ -18,7 +18,7 @@ solver inp = outp
         f inp sending = if sending
             then (True, Just 66)
             else case inp of
-            Just _ -> (True, Just 65)
+            Just a -> (True, Just a)
             _ -> (False, Nothing)
 
 serializer :: HiddenClockResetEnable dom =>

@@ -15,8 +15,8 @@ clash:
 	-rm project.json
 	clash --verilog Serial.hs -outputdir .hs -fclash-hdldir verilog/
 
-all: clash json config bitstream
-noclash: json config bitstream
+all: clash yosys nextpnr bitstream
+noclash: yosys nextpnr bitstream
 
 clean:
 	rm -r *.hi *.o *.dyn_hi *.dyn_o project.json test.vcd sim.vvp ulx3s_out.config ulx3s.bit verilog/Serial.topEntity/
