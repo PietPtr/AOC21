@@ -8,8 +8,6 @@ module test;
     initial begin
         # 18 reset = 1;
         # 11 reset = 0;
-        # 29 reset = 1;
-        # 11 reset = 0;
         # 10000000;
         $finish;
     end
@@ -19,6 +17,10 @@ module test;
         # 87060 uart_in = 0;
         # 17400 uart_in = 1;
         # 17400 uart_in = 0;
+        # 17400 uart_in = 1;
+        # 200000 uart_in = 0;
+        # 17400 uart_in = 0;
+        # 17400 uart_in = 1;
         # 17400 uart_in = 1;
     end
 

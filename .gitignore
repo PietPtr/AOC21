@@ -2,4 +2,9 @@
 *.vcd
 *.config
 *.json
-
+*.dyn_o
+*.dyn_hi
+*.hi
+*.o
+*/.hs
+*.bit

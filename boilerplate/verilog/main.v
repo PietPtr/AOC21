@@ -1,4 +1,4 @@
-`include "serial/serial.v"
+`include "Serial.topEntity/serial.v"
 `include "txuartlite.v"
 `include "rxuartlite.v"
 
@@ -47,20 +47,25 @@ module top
 
     wire can_send;
     assign can_send = !tx_stb && !tx_busy;
+    wire s0_stb;
+    wire [7:0] s0_data;
 
     always @(posedge clk_25mhz) begin
         o_led <= rx_data;
-        tx_stb  <= tx_and_stb[0];
-        tx_data <= tx_and_stb[8:1];
+        tx_stb <= s0_stb;
+        tx_data <= s0_data;
     end
 
     wire [8:0] tx_and_stb;
 
     serial s0 (
-        .clk (clk_25mhz), 
+        .clk (clk_25mhz),
         .reset (reset), 
         .enable (enable), 
-        .cansend (can_send),
-        .out (tx_and_stb) );
+        .can_send (can_send),
+        .data_in (rx_data),
+        .in_stb (rx_avail),
+        .out_stb (s0_stb),
+        .data_out (s0_data) );
 
 endmodule
