@@ -118,29 +118,48 @@ solverMealy (count, phase) puzzleIn = (state', output)
 
         state' = (count', phase')
 
-type SerializerState = (Maybe (Unsigned 32), Index 5)
+type SerializerState = (Maybe (Unsigned 32), Index 9)
 emptySerializerState = (Nothing, 0)
 
 serializerMealy :: SerializerState -> Maybe PuzzleOutput -> (SerializerState, Maybe SerialByte)
-serializerMealy (number, digitIdx) result = (state', fromIntegral <$> byte)
+serializerMealy (number, digitIdx) result = ((number', digitIdx'), fromIntegral <$> byte)
     where
-        dividers = 1000:>100:>10:>1:>Nil :: Vec 4 (Unsigned 10)
-        divider = resize $ dividers !! digitIdx 
-        digit a = (a `div` divider)
-        next a = a - (digit a) * divider
-        
         number' = case number of
-            Just s -> Just $ next s
-            Nothing -> case result of
-                Just r -> Just r
-                Nothing -> Nothing
-
+            Nothing -> result
+            Just n -> Just $ n <<< 4
+        
         digitIdx' = case number of
             Just _ -> satAdd SatBound digitIdx 1
             Nothing -> 0
-
+        
         byte = if digitIdx < maxBound
-            then (\a -> 0b0011_0000 .|. digit a) <$> number
+            then (\a -> toHex (a >>> 28)) <$> number
             else Nothing
 
-        state' = (number', digitIdx')
+        toHex a = if a <= 9
+            then 0b0011_0000 .|. a
+            else a + 87
+
+-- serializerMealy :: SerializerState -> Maybe PuzzleOutput -> (SerializerState, Maybe SerialByte)
+-- serializerMealy (number, digitIdx) result = (state', fromIntegral <$> byte)
+--     where
+--         dividers = 1000:>100:>10:>1:>Nil :: Vec 4 (Unsigned 10)
+--         divider = resize $ dividers !! digitIdx 
+--         digit a = (a `div` divider)
+--         next a = a - (digit a) * divider
+        
+--         number' = case number of
+--             Just s -> Just $ next s
+--             Nothing -> case result of
+--                 Just r -> Just r
+--                 Nothing -> Nothing
+
+--         digitIdx' = case number of
+--             Just _ -> satAdd SatBound digitIdx 1
+--             Nothing -> 0
+
+--         byte = if digitIdx < maxBound
+--             then (\a -> 0b0011_0000 .|. digit a) <$> number
+--             else Nothing
+
+--         state' = (number', digitIdx')

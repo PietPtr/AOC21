@@ -75,30 +75,26 @@ module serial
   // Puzzle.hs:93:1-11
   wire [65:0] phase;
   // Puzzle.hs:(19,1)-(20,68)
-  reg [35:0] maybeToBoola_c$ds_app_arg_1 = {{1'b0,32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx},   3'd0};
+  reg [36:0] maybeToBoola_c$ds_app_arg_1 = {{1'b0,32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx},   4'd0};
   wire [8:0] result_5;
-  wire [44:0] result_6;
+  wire [45:0] c$case_alt_8;
   wire [8:0] c$app_arg_8;
-  wire [8:0] c$case_alt_8;
+  wire [8:0] c$case_alt_9;
+  wire [7:0] result_6;
   wire signed [63:0] c$app_arg_9;
-  wire [2:0] c$app_arg_10;
-  wire [3:0] z;
-  wire [2:0] result_7;
-  wire [32:0] c$app_arg_11;
-  wire [31:0] c$app_arg_12;
+  wire signed [63:0] c$app_arg_10;
   // Puzzle.hs:125:1-15
-  wire [31:0] divider;
+  wire [31:0] a;
+  wire [3:0] c$app_arg_11;
+  wire [4:0] z;
+  wire [3:0] result_7;
   // Puzzle.hs:125:1-15
-  wire [31:0] s;
+  wire [3:0] digitIdx1_0;
+  wire [32:0] c$app_arg_12;
+  // Puzzle.hs:125:1-15
+  wire [31:0] n;
   // Puzzle.hs:125:1-15
   wire [32:0] number;
-  wire [9:0] result_8;
-  // Puzzle.hs:125:1-15
-  wire signed [63:0] wild3_0;
-  // Puzzle.hs:125:1-15
-  wire signed [63:0] c$wild3_app_arg_0;
-  // Puzzle.hs:125:1-15
-  wire [2:0] digitIdx1_0;
   // Lib.hs:(22,1)-(23,72)
   reg [265:0] maybeToBoola_c$ds_app_arg_2 = {{8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,
   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,
@@ -107,26 +103,26 @@ module serial
   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,
   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,
   8'b00000001,   8'b00000001},   5'd0,   5'd0};
-  wire [8:0] result_9;
+  wire [8:0] result_8;
   // Lib.hs:40:1-15
-  wire signed [63:0] c$wild3_app_arg_1;
-  wire [255:0] result_10;
+  wire signed [63:0] c$wild3_app_arg_0;
+  wire [255:0] result_9;
   wire [255:0] c$app_arg_13;
   wire [4:0] c$app_arg_14;
   wire [4:0] c$app_arg_15;
   // Lib.hs:40:1-15
-  wire signed [63:0] c$wild3_app_arg_2;
-  wire [7:0] result_11;
+  wire signed [63:0] c$wild3_app_arg_1;
+  wire [7:0] result_10;
   wire [8:0] c$app_arg_16;
-  wire [274:0] result_12;
+  wire [274:0] result_11;
   // Lib.hs:40:1-15
   wire  canSend;
   // Lib.hs:40:1-15
-  wire [7:0] a;
+  wire [7:0] a_0;
+  // Lib.hs:40:1-15
+  wire signed [63:0] wild3_0;
   // Lib.hs:40:1-15
   wire signed [63:0] wild3_1;
-  // Lib.hs:40:1-15
-  wire signed [63:0] wild3_2;
   // Lib.hs:40:1-15
   wire  doSend;
   // Lib.hs:40:1-15
@@ -144,8 +140,8 @@ module serial
   wire [7:0] c$bv_0;
   wire [32:0] c$case_alt_selection_6;
   wire [32:0] c$case_alt_selection_9;
-  wire [31:0] c$i_27;
-  wire [39:0] c$vecFlat;
+  wire [31:0] c$i_28;
+  wire [31:0] c$i_30;
   wire [8:0] result;
 
   assign eta = {can_send,   data_in,   in_stb};
@@ -370,61 +366,47 @@ module serial
   // register begin
   always @(posedge clk or  posedge  reset) begin : maybeToBoola_c$ds_app_arg_1_register
     if ( reset) begin
-      maybeToBoola_c$ds_app_arg_1 <= {{1'b0,32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx},   3'd0};
+      maybeToBoola_c$ds_app_arg_1 <= {{1'b0,32'bxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx},   4'd0};
     end else if (enable) begin
-      maybeToBoola_c$ds_app_arg_1 <= result_6[44:9];
+      maybeToBoola_c$ds_app_arg_1 <= c$case_alt_8[45:9];
     end
   end
   // register end
 
-  assign result_5 = result_6[8:0];
+  assign result_5 = c$case_alt_8[8:0];
 
-  assign result_6 = {{c$app_arg_11,
-                      c$app_arg_10},   c$app_arg_8};
+  assign c$case_alt_8 = {{c$app_arg_12,
+                          c$app_arg_11},   c$app_arg_8};
 
-  assign c$app_arg_8 = (digitIdx1_0 < 3'd4) ? c$case_alt_8 : {1'b0,8'bxxxxxxxx};
+  assign c$app_arg_8 = (digitIdx1_0 < 4'd8) ? c$case_alt_9 : {1'b0,8'bxxxxxxxx};
 
-  assign c$case_alt_8 = number[32:32] ? {1'b1,$unsigned(c$app_arg_9[0+:8])} : {1'b0,8'bxxxxxxxx};
+  assign c$case_alt_9 = number[32:32] ? {1'b1,result_6} : {1'b0,8'bxxxxxxxx};
 
-  assign c$i_27 = (32'd48 | c$app_arg_12);
+  assign result_6 = (a <= 32'd9) ? ($unsigned(c$app_arg_9[0+:8])) : ($unsigned(c$app_arg_10[0+:8]));
 
-  assign c$app_arg_9 = $unsigned({{(64-32) {1'b0}},c$i_27});
+  assign c$i_28 = (32'd48 | a);
 
-  assign c$app_arg_10 = number[32:32] ? result_7 : 3'd0;
+  assign c$app_arg_9 = $unsigned({{(64-32) {1'b0}},c$i_28});
 
-  assign z = digitIdx1_0 + 3'd1;
+  assign c$i_30 = (a + 32'd87);
 
-  assign result_7 = (z > 4'd4) ? 3'd4 : (z[0+:3]);
+  assign c$app_arg_10 = $unsigned({{(64-32) {1'b0}},c$i_30});
 
-  assign c$app_arg_11 = number[32:32] ? {1'b1,s - (c$app_arg_12 * divider)} : result_4;
+  assign a = n >> (64'sd28);
 
-  assign c$app_arg_12 = s / divider;
+  assign c$app_arg_11 = number[32:32] ? result_7 : 4'd0;
 
-  assign divider = {{(32-10) {1'b0}},result_8};
+  assign z = digitIdx1_0 + 4'd1;
 
-  assign s = number[31:0];
+  assign result_7 = (z > 5'd8) ? 4'd8 : (z[0+:4]);
 
-  assign number = maybeToBoola_c$ds_app_arg_1[35:3];
+  assign digitIdx1_0 = maybeToBoola_c$ds_app_arg_1[3:0];
 
-  assign c$vecFlat = {10'd1000,   10'd100,
-                      10'd10,   10'd1};
+  assign c$app_arg_12 = number[32:32] ? {1'b1,n << (64'sd4)} : result_4;
 
-  // index begin
-  wire [9:0] vecArray [0:4-1];
-  genvar i_1;
-  generate
-  for (i_1=0; i_1 < 4; i_1=i_1+1) begin : mk_array
-    assign vecArray[(4-1)-i_1] = c$vecFlat[i_1*10+:10];
-  end
-  endgenerate
-  assign result_8 = vecArray[(wild3_0)];
-  // index end
+  assign n = number[31:0];
 
-  assign wild3_0 = $signed(c$wild3_app_arg_0);
-
-  assign c$wild3_app_arg_0 = $unsigned({{(64-3) {1'b0}},digitIdx1_0});
-
-  assign digitIdx1_0 = maybeToBoola_c$ds_app_arg_1[2:0];
+  assign number = maybeToBoola_c$ds_app_arg_1[36:4];
 
   // register begin
   always @(posedge clk or  posedge  reset) begin : maybeToBoola_c$ds_app_arg_2_register
@@ -437,55 +419,55 @@ module serial
     8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,   8'b00000001,
     8'b00000001,   8'b00000001},   5'd0,   5'd0};
     end else if (enable) begin
-      maybeToBoola_c$ds_app_arg_2 <= result_12[274:9];
+      maybeToBoola_c$ds_app_arg_2 <= result_11[274:9];
     end
   end
   // register end
 
-  assign result_9 = result_12[8:0];
+  assign result_8 = result_11[8:0];
 
-  assign c$wild3_app_arg_1 = $unsigned({{(64-5) {1'b0}},writePointer1});
+  assign c$wild3_app_arg_0 = $unsigned({{(64-5) {1'b0}},writePointer1});
 
   // vector replace begin
-  genvar i_2;
+  genvar i_1;
   generate
-  for (i_2=0;i_2<32;i_2=i_2+1) begin : vector_replace_0
-    assign result_10[(31-i_2)*8+:8] = (wild3_1) == i_2 ? a : memory1[(31-i_2)*8+:8];
+  for (i_1=0;i_1<32;i_1=i_1+1) begin : vector_replace_0
+    assign result_9[(31-i_1)*8+:8] = (wild3_0) == i_1 ? a_0 : memory1[(31-i_1)*8+:8];
   end
   endgenerate
   // vector replace end
 
-  assign c$app_arg_13 = result_5[8:8] ? result_10 : memory1;
+  assign c$app_arg_13 = result_5[8:8] ? result_9 : memory1;
 
   assign c$app_arg_14 = result_5[8:8] ? (writePointer1 + 5'd1) : writePointer1;
 
   assign c$app_arg_15 = doSend ? (readPointer1 + 5'd1) : readPointer1;
 
-  assign c$wild3_app_arg_2 = $unsigned({{(64-5) {1'b0}},readPointer1});
+  assign c$wild3_app_arg_1 = $unsigned({{(64-5) {1'b0}},readPointer1});
 
   // index begin
-  wire [7:0] vecArray_0 [0:32-1];
-  genvar i_3;
+  wire [7:0] vecArray [0:32-1];
+  genvar i_2;
   generate
-  for (i_3=0; i_3 < 32; i_3=i_3+1) begin : mk_array_0
-    assign vecArray_0[(32-1)-i_3] = memory1[i_3*8+:8];
+  for (i_2=0; i_2 < 32; i_2=i_2+1) begin : mk_array
+    assign vecArray[(32-1)-i_2] = memory1[i_2*8+:8];
   end
   endgenerate
-  assign result_11 = vecArray_0[(wild3_2)];
+  assign result_10 = vecArray[(wild3_1)];
   // index end
 
-  assign c$app_arg_16 = doSend ? {1'b1,result_11} : {1'b0,8'bxxxxxxxx};
+  assign c$app_arg_16 = doSend ? {1'b1,result_10} : {1'b0,8'bxxxxxxxx};
 
-  assign result_12 = {{c$app_arg_13,
+  assign result_11 = {{c$app_arg_13,
                        c$app_arg_14,   c$app_arg_15},   c$app_arg_16};
 
   assign canSend = eta[9:9];
 
-  assign a = result_5[7:0];
+  assign a_0 = result_5[7:0];
+
+  assign wild3_0 = $signed(c$wild3_app_arg_0);
 
   assign wild3_1 = $signed(c$wild3_app_arg_1);
-
-  assign wild3_2 = $signed(c$wild3_app_arg_2);
 
   assign doSend = canSend ? (writePointer1 > readPointer1) : 1'b0;
 
@@ -495,10 +477,10 @@ module serial
 
   assign memory1 = maybeToBoola_c$ds_app_arg_2[265:10];
 
-  assign result = result_9[8:8] ? {a1_0,
+  assign result = result_8[8:8] ? {a1_0,
                                    1'b1} : {{8 {1'bx}},   1'b0};
 
-  assign a1_0 = result_9[7:0];
+  assign a1_0 = result_8[7:0];
 
   assign data_out = result[8:1];
 
