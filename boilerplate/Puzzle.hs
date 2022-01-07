@@ -3,6 +3,9 @@ module Puzzle where
 import Clash.Prelude
 
 import Types
+import Lib
+import Data.Char
+import Data.Maybe
 
 parser :: HiddenClockResetEnable dom =>
     Signal dom (Maybe SerialByte) -> Signal dom (Maybe PuzzleInput)
@@ -10,16 +13,7 @@ parser = mealy parserMealy emptyParserState
 
 solver :: HiddenClockResetEnable dom =>
     Signal dom (Maybe PuzzleInput) -> Signal dom (Maybe PuzzleOutput)
-solver inp = outp
-    where
-        (sending', outp) = unbundle $ f <$> inp <*> sending
-        sending = register False (sending')
-
-        f inp sending = if sending
-            then (True, Just 66)
-            else case inp of
-            Just a -> (True, Just a)
-            _ -> (False, Nothing)
+solver inp = pure Nothing
 
 serializer :: HiddenClockResetEnable dom =>
     Signal dom (Maybe PuzzleOutput) -> Signal dom (Maybe SerialByte)
@@ -29,7 +23,5 @@ type ParserState = ()
 emptyParserState = ()
 
 parserMealy :: ParserState -> (Maybe SerialByte) -> (ParserState, Maybe PuzzleInput)
-parserMealy state input = (state, output)
-    where
-        output = fromIntegral <$> input
+parserMealy state input = (state, Nothing)
 
