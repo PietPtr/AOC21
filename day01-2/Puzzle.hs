@@ -2,11 +2,12 @@
 {-# LANGUAGE NumericUnderscores #-}
 module Puzzle where
 
-import Clash.Prelude
+import Clash.Prelude hiding (window)
 
 import Types
 import Lib
 import Debug.Trace
+import Data.Maybe
 
 parser :: HiddenClockResetEnable dom =>
     Signal dom (Maybe SerialByte) -> Signal dom (Maybe PuzzleInput)
@@ -79,44 +80,36 @@ parserMealy state input = (state', output)
 
 
 
-type SolverState = (Unsigned 32, SolverPhase)
-emptySolverState = (0, NoInput maxBound)
-
 data SolverPhase 
-    = NoInput (Unsigned 32)
-    | InputReady (Unsigned 32) (Unsigned 32) 
+    = Computing
     | ResultReady
-    | Finished 
+    | Finished
     deriving (Show, Generic, NFDataX)
 
-solverMealy :: SolverState -> Maybe PuzzleInput -> (SolverState, Maybe PuzzleOutput)
-solverMealy (count, phase) puzzleIn = (state', output)
-    where
-        phase' = case phase of
-            Finished -> Finished
-            ResultReady -> Finished
-            NoInput prev -> case puzzleIn of
-                Nothing -> NoInput prev
-                Just (Height inp) -> InputReady inp prev
-                Just EOF -> ResultReady
-            InputReady inp prev -> case puzzleIn of
-                Nothing -> NoInput inp
-                Just (Height next) -> InputReady next inp
-                Just EOF -> ResultReady
-            
-        count' = case phase of
-            Finished -> count
-            NoInput val -> count
-            InputReady input prev -> if input > prev
-                then count + 1
-                else count
+type SolverState = (Unsigned 32, Unsigned 16, Vec 3 (Unsigned 16), SolverPhase)
+emptySolverState = (0, maxBound, repeat $ maxBound `div` 3, Computing)
 
-        output = case phase of
-            ResultReady -> Just count
+solverMealy :: SolverState -> Maybe PuzzleInput -> (SolverState, Maybe PuzzleOutput)
+solverMealy (count, prevSum, window, phase) puzzleIn = (state', output)
+    where
+        output = case puzzleIn of
+            Just EOF -> Just count'
             _ -> Nothing
 
+        window' = case puzzleIn of
+            Just (Height h) -> shiftIn h
+            _ -> window
 
-        state' = (count', phase')
+        shiftIn a = case shiftInAt0 window (resize a :> Nil) of
+            (vec, _) -> vec
+
+        prevSum' = sum window
+
+        count' = if prevSum' > prevSum
+            then count + 1
+            else count
+
+        state' = (count', prevSum', window', phase)
 
 type SerializerState = (Maybe (Unsigned 32), Index 9)
 emptySerializerState = (Nothing, 0)
